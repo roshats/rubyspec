@@ -73,5 +73,18 @@ ruby_version_is "1.9" do
     it "ignores variables defined in proc body" do
       Proc.new{ a=1 }.parameters.size.should == 0
     end
+
+    it "consider grouped parameters as one parameter" do
+      Proc.new{|(x,y)|}.parameters.size.should == 1
+    end
+
+    it "sets nil name for grouped parameters for Proc and proc" do
+      Proc.new{|(x,y)|}.parameters.first.last.should == nil
+      proc{|(x,y)|}.parameters.first.last.should == nil
+    end
+
+    it "eliminates parameter name for grouped parameters for lambda" do
+      lambda{|(x,y)|}.parameters.should == [[:req]]
+    end
   end
 end
