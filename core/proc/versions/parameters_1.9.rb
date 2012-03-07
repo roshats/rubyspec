@@ -69,5 +69,9 @@ ruby_version_is "1.9" do
     it "adds nameless rest arg for \"star\" argument" do
       lambda {|x,*|}.parameters.should == [[:req, :x], [:rest]]
     end
+
+    it "ignores variables defined in proc body" do
+      Proc.new{ a=1 }.parameters.size.should == 0
+    end
   end
 end
